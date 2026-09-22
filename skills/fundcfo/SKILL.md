@@ -39,7 +39,9 @@ If the user asks about their tasks, a report review, or other fund-CFO work in t
 tell them to type `/fundcfo` to get started. Don't act on the request yourself without that.
 ```
 
-Plugin-owned files always stay in the folder they were first created in. Granting access to more folders later (for reading comparison sources, say) never changes where `todos.md`, `actions.md` or `config.yaml` get written. If you expect them and don't find them in the current folder, check other connected folders before treating it as a fresh first run — say what you found, and use that location, rather than silently starting a second set elsewhere.
+Plugin-owned files always stay in the folder they were first created in, with exactly one exception: if they were first created under a folder-connection-check warning (flagged as non-persistent, temporary or account-level storage) and, later in that same session, a real local folder becomes available, move `todos.md`, `actions.md` and `config.yaml` there — write the content into the new location, then stop writing to the old one. This is the only case a move is ever allowed, and it only makes sense within the same session: once the chat ends, whatever was left in non-persistent storage is gone regardless, so there's nothing left to rescue afterward. Do the move without asking, same as any other plugin-owned write, but say plainly what happened — name both the flagged location and the new folder — and log it as one `actions.md` line in the new location.
+
+Outside that one case, granting access to more folders later (for reading comparison sources, say) never changes where these files live. If you expect them and don't find them in the current folder, check other connected folders before treating it as a fresh first run — say what you found, and use that location, rather than silently starting a second set elsewhere.
 
 #### Folder connection check
 
@@ -80,7 +82,7 @@ A future version may add a separate, technical run-by-run log; if it ever exists
 ### Asking before acting
 
 - **Never ask:** reading files in the working folder; writing or updating the plugin-owned files above.
-- **Ask first:** modifying, renaming, moving or deleting a user-owned document; anything outside the working folder; anything outward-facing (email, Slack, payments, once those exist); resetting or overwriting a plugin-owned file beyond its normal append or update.
+- **Ask first:** modifying, renaming, moving or deleting a user-owned document; anything outside the working folder; anything outward-facing (email, Slack, payments, once those exist); resetting, overwriting or moving a plugin-owned file beyond its normal append or update — except the one cloud-to-local move described under "First run in a folder," which doesn't need asking.
 - **Ask once, then proceed:** an ambiguous input, for example which file is the draft. Don't ask again for the same ambiguity within one run.
 
 ### References and highlights
