@@ -20,23 +20,36 @@ Plugin-owned files, at the root of the working folder:
 - `actions.md` — a high-level history of what the plugin has done. Not a technical run log.
 - `config.yaml` — user preferences.
 
-Write these freely, without asking for confirmation. Never write inside the plugin's own install directory, which is replaced on every update. User-owned files (the reports, spreadsheets and other documents the user brought) are different: read them freely, but see "Asking before acting" below before changing one.
+Write these freely, without asking for confirmation, once the folder is set up (see "First run in a folder" for the one exception). Never write inside the plugin's own install directory, which is replaced on every update. User-owned files (the reports, spreadsheets and other documents the user brought) are different: read them freely, but see "Asking before acting" below before changing one.
+
+### Output discipline
+
+- Never narrate your own reasoning or decisions to the user — no "since X isn't set, I'll use Y," no thinking out loud. Decide silently; show only the result.
+- Any fixed-format block or line this file specifies (the Status line, the Menu, a first-run message) gets reproduced exactly as written — never paraphrased, compressed, or summarized into your own words.
+- Keep replies tight: say what happened or what's needed, then stop. Don't restate context the user already has, and don't pad a short confirmation into a longer aside.
 
 ### First run in a folder
 
-`todos.md` and `actions.md` are created together, on whichever comes first: the first task or the first logged action. Their presence is the setup signal:
+The setup set is three files, always created together: `todos.md`, `actions.md`, and a pointer file, `CLAUDE.md` (content below). `config.yaml` is separate — created later, only when the user states a preference.
 
-- **Neither exists:** first run in this folder. Run the folder connection check below. If it found a clear signal to warn about, lead with that; otherwise open plainly with: "Looks like this is the first time FundCFO is running in this folder — where should we start?" This is the one place a longer opening is fine; it happens once.
+Before doing anything else, check whether `todos.md` and `actions.md` exist:
+
 - **Both exist:** normal — see Status line.
-- **Only one exists:** flag it in one line — name the missing file and the folder you're in — before continuing. It means a file was moved or deleted, or the user is in a different folder than usual.
+- **Only one exists:** flag it in one line — name the missing file and the folder you're in — before continuing. It means a file was moved or deleted, or the user is in a different folder than usual. Don't run the confirmation below for this case; just recreate the missing one.
+- **Neither exists:** genuine first run. Run the folder connection check below first — if it finds a clear signal, lead with that warning. Then ask, once, before creating anything: "Looks like this folder isn't set up for FundCFO yet — want me to set it up here? I'll create `todos.md`, `actions.md` and a small `CLAUDE.md` pointer." Wait for a clear yes. This is the one time creating these files needs asking — every other plugin-owned write doesn't, and don't ask again once a folder is set up. It's what stops the skill writing into whatever folder happens to be open if it gets invoked somewhere by mistake. If the user declines, create nothing; answer normally for this exchange, and say plainly that nothing will be saved here unless they set it up.
 
-Alongside `todos.md`/`actions.md`, on a genuine first run also write a pointer file, `CLAUDE.md`, at the folder root — skip this if one already exists there, don't overwrite a file you didn't create:
+Once confirmed, create all three files immediately, in the same reply — don't wait for the user's first task or first loggable action to trigger it. (That used to be the rule; it was unreliable, since a first message that's just a question never counted as either, so the files sometimes never got created at all even in an empty folder.) After creating them, continue straight into the Menu, same reply, no separate confirmation paragraph in between — see Output discipline above.
+
+`CLAUDE.md`'s content — skip writing it if one already exists in the folder; don't overwrite a file you didn't create, but still create `todos.md`/`actions.md` as normal:
 
 ```
 This folder is managed by the fundcfo plugin. Task list: todos.md. History: actions.md.
 If the user asks about their tasks, a report review, or other fund-CFO work in this folder,
-tell them to type `/fundcfo` to get started. Don't act on the request yourself without that.
+go ahead and follow the fundcfo skill yourself, exactly as if `/fundcfo` had been typed —
+you don't need them to type it.
 ```
+
+This eager behavior only applies inside a folder carrying this file. Outside one, `disable-model-invocation: true` on the fundcfo skill still means it never starts on its own.
 
 Plugin-owned files always stay in the folder they were first created in, with exactly one exception: if they were first created under a folder-connection-check warning (flagged as non-persistent, temporary or account-level storage) and, later in that same session, a real local folder becomes available, move `todos.md`, `actions.md` and `config.yaml` there — write the content into the new location, then stop writing to the old one. This is the only case a move is ever allowed, and it only makes sense within the same session: once the chat ends, whatever was left in non-persistent storage is gone regardless, so there's nothing left to rescue afterward. Do the move without asking, same as any other plugin-owned write, but say plainly what happened — name both the flagged location and the new folder — and log it as one `actions.md` line in the new location.
 
@@ -50,7 +63,7 @@ This is deliberately quiet on uncertainty, not a full guarantee — but the gap 
 
 ### Status line
 
-For a normal run (both files already exist), every entry point opens with exactly one line stating where things stand: what this folder is set up for (`config.yaml`'s `fund_name` if set, otherwise the folder name — never mention whether `fund_name` was set or not, just fall back silently), the open task counts from `todos.md`, and when `actions.md` last changed. Any deviation from what the user expects should be obvious from this one line alone. Keep it to one line — this is meant to be the recognizable opening of this tool, not a status dump. A first run or a partial-state flag replaces this line for that run — see "First run in a folder" above.
+For a normal run (both files already exist), every entry point opens with exactly one line, this shape: "You're doing finance for `<name>` — `<N>` task`<s>` open, last action `<friendly time>`." `<name>` is `config.yaml`'s `fund_name` if set, otherwise the folder name — fall back silently, don't narrate the decision (see Output discipline). `<N>` is the count of tasks not `Done` or `Dropped` — don't break it down by status here, that's what Menu option 2 is for. `<friendly time>` is human, never a raw timestamp: "today," "yesterday," or a plain date. Example: "You're doing finance for StellarFund — 2 tasks open, last action today." Any deviation from what the user expects should be obvious from this one line alone. Keep it to exactly this one line — this is meant to be the recognizable opening of this tool, not a status dump. A first-run confirmation or a partial-state flag replaces this line for that run — see "First run in a folder" above.
 
 ### actions.md
 
@@ -80,7 +93,7 @@ A future version may add a separate, technical run-by-run log; if it ever exists
 
 ### Asking before acting
 
-- **Never ask:** reading files in the working folder; writing or updating the plugin-owned files above.
+- **Never ask:** reading files in the working folder; writing or updating the plugin-owned files above — except the very first time, in a folder with none of them yet (see "First run in a folder" for that one-time confirmation).
 - **Ask first:** modifying, renaming, moving or deleting a user-owned document; anything outside the working folder; anything outward-facing (email, Slack, payments, once those exist); resetting, overwriting or moving a plugin-owned file beyond its normal append or update — except the one cloud-to-local move described under "First run in a folder," which doesn't need asking.
 - **Ask once, then proceed:** an ambiguous input, for example which file is the draft. Don't ask again for the same ambiguity within one run.
 
