@@ -2,7 +2,7 @@
 
 fundcfo.ai — an assistant for the CFO of a VC fund, packaged as a Claude Cowork plugin.
 
-**Version 0.1 (pilot)** — one working mode: **Do reporting**, with a **Review** task for draft quarterly reports.
+**Version 0.2 (pilot)** — one working mode: **Do reporting**, with a **Review** task for draft quarterly reports.
 
 ## What it does
 
@@ -27,7 +27,7 @@ Requires Claude Cowork (desktop app) on a paid plan.
 2. Create a Cowork Project with **Use an existing folder**, pointing at a dedicated folder for your fund reports. Put the draft report there, and any comparison sources you have.
 3. In that Project, type `/fundcfo`.
 
-Use a dedicated folder. Claude can only read and write files in folders you connect, so connect only what you want it to see.
+Use a dedicated folder, and connect it. If you start a Project without connecting a real folder, files still get written somewhere, but they won't be there in your next chat — the first run checks for this and warns you, but confirm it yourself too: after the first run, check that `todos.md` shows up in Finder/Explorer, not just in the chat.
 
 ## Usage
 
@@ -45,6 +45,9 @@ What would you like to do?
 Each run writes to your Project folder:
 - `actions.md`: a high-level history of what the plugin has done — a task added, a report reviewed, and so on. One line per action, appended every run.
 - `todos.md` and `config.yaml`: your task list and preferences.
+- `CLAUDE.md`: written once, on the first run only (skipped if you already have one). It tells Claude this folder is managed by fundcfo, so that opening the folder directly and asking "do I have tasks?" points you back to `/fundcfo` instead of drawing a blank — it doesn't act on your behalf, it only tells you to type `/fundcfo`.
+
+Plugin-owned files stay wherever they were first created — connecting more folders later, to read other sources, never moves them.
 
 ## Data handling
 

@@ -27,13 +27,29 @@ Write these freely, without asking for confirmation. Never write inside the plug
 
 `todos.md` and `actions.md` are created together, on whichever comes first: the first task or the first logged action. Their presence is the setup signal:
 
-- **Neither exists:** first run in this folder. Say so plainly instead of guessing.
-- **Both exist:** normal.
+- **Neither exists:** first run in this folder. Run the folder connection check below, then open with: "Looks like this is the first time FundCFO is running in this folder — where should we start?" This is the one place a longer opening is fine; it happens once.
+- **Both exist:** normal — see Status line.
 - **Only one exists:** flag it in one line — name the missing file and the folder you're in — before continuing. It means a file was moved or deleted, or the user is in a different folder than usual.
+
+Alongside `todos.md`/`actions.md`, on a genuine first run also write a pointer file, `CLAUDE.md`, at the folder root — skip this if one already exists there, don't overwrite a file you didn't create:
+
+```
+This folder is managed by the fundcfo plugin. Task list: todos.md. History: actions.md.
+If the user asks about their tasks, a report review, or other fund-CFO work in this folder,
+tell them to type `/fundcfo` to get started. Don't act on the request yourself without that.
+```
+
+Plugin-owned files always stay in the folder they were first created in. Granting access to more folders later (for reading comparison sources, say) never changes where `todos.md`, `actions.md` or `config.yaml` get written. If you expect them and don't find them in the current folder, check other connected folders before treating it as a fresh first run — say what you found, and use that location, rather than silently starting a second set elsewhere.
+
+#### Folder connection check
+
+Persistence depends on a real, connected folder, and there's no confirmed way to know from inside a skill whether one exists — it may vary by host. So do both: check what you can, and verify with the user regardless. Before writing `todos.md`/`actions.md` for the first time, look at whatever your own context tells you about where that write will land. If it clearly names a real, user-owned folder, say which one. If it doesn't — no path visible, or what you can see looks like internal, temporary or account-level storage rather than a folder on the user's machine — say so plainly and warn that without a connected Project folder, nothing written this session will still be there next time. Either way, ask the user to confirm, once, that they can see `todos.md` in their own file browser (Finder/Explorer) outside this chat — that check can't be fooled by a path that looks plausible but isn't actually persistent. If they say they can't find it, stop and tell them to connect a folder before relying on anything from this session.
+
+This is self-correcting even when the check above finds nothing to go on: because "neither file exists" is what triggers first-run in the first place, a persistence failure that slips through once surfaces again, with the same warning, the very next time the user opens this folder — so a real gap shows up within two sessions, not silently forever.
 
 ### Status line
 
-Before anything else, every entry point opens with exactly one line stating where things stand: what this folder is set up for (`config.yaml`'s `fund_name` if set, otherwise the folder name), the open task counts from `todos.md`, and when `actions.md` last changed. On a first run, say so instead of showing counts: "First run in this folder — no tasks yet, nothing logged." Any deviation from what the user expects should be obvious from this one line alone. Keep it to one line — this is meant to be the recognizable opening of this tool, not a status dump.
+For a normal run (both files already exist), every entry point opens with exactly one line stating where things stand: what this folder is set up for (`config.yaml`'s `fund_name` if set, otherwise the folder name — never mention whether `fund_name` was set or not, just fall back silently), the open task counts from `todos.md`, and when `actions.md` last changed. Any deviation from what the user expects should be obvious from this one line alone. Keep it to one line — this is meant to be the recognizable opening of this tool, not a status dump. A first run or a partial-state flag replaces this line for that run — see "First run in a folder" above.
 
 ### actions.md
 
@@ -124,6 +140,8 @@ What would you like to do?
 ```
 
 The `Try:` lines nest under option 1, one per highlighted reference. Omit them entirely if nothing is highlighted. Options 3 and 4 can't be turned off in a chat, so they stay listed as "(coming soon)". If the user picks one, say in one line that it isn't available yet, and show the Menu again.
+
+If the host gives you a native way to present a set of choices for the user to pick from (a tool built for exactly that, not just formatted text), use it for these four options instead of the plain block above. Fall back to the plain block if no such mechanism is available. Either way the four options and their order stay the same.
 
 ## Menu actions
 
