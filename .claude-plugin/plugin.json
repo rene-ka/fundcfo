@@ -1,0 +1,9 @@
+{
+  "name": "fundcfo",
+  "description": "An assistant for the CFO of a VC fund. v0.1: review a draft quarterly report for inconsistencies.",
+  "version": "0.1.0",
+  "author": {
+    "name": "fundcfo.ai"
+  },
+  "repository": "https://github.com/rene-ka/fundcfo"
+}
