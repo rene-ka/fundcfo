@@ -68,7 +68,12 @@ skills/do-reporting/                        the reporting mode
 skills/do-reporting/references/review.md    the Review task's instructions
 ```
 
-To package for sharing: `zip -r fundcfo.zip .claude-plugin skills`
+To package for sharing, name the zip after `plugin.json`'s current version:
+
+```
+VERSION=$(python3 -c "import json; print(json.load(open('.claude-plugin/plugin.json'))['version'])")
+zip -r fundcfo-$VERSION.zip .claude-plugin skills
+```
 
 ## Development
 
