@@ -27,7 +27,7 @@ Requires Claude Cowork (desktop app) on a paid plan.
 2. Create a Cowork Project with **Use an existing folder**, pointing at a dedicated folder for your fund reports. Put the draft report there, and any comparison sources you have.
 3. In that Project, type `/fundcfo`.
 
-Use a dedicated folder, and connect it. If you start a Project without connecting a real folder, files still get written somewhere, but they won't be there in your next chat — the first run checks for this and warns you, but confirm it yourself too: after the first run, check that `todos.md` shows up in Finder/Explorer, not just in the chat.
+Use a dedicated folder, and connect it. If you start a Project without connecting a real folder, files still get written somewhere, but they may not be there in your next chat. The first run warns about this when there's a clear sign it's happening — if you ever see the first-run message again on a folder you'd already been using, that's the tell: connect a real folder and it'll pick up from there.
 
 ## Usage
 

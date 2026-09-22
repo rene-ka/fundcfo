@@ -22,7 +22,7 @@ Write these freely, without asking for confirmation. Never write inside the plug
 
 `todos.md` and `actions.md` are created together, on whichever comes first: the first task or the first logged action. Their presence is the setup signal:
 
-- **Neither exists:** first run in this folder. Run the folder connection check below, then open with: "Looks like this is the first time FundCFO is running in this folder — where should we start?" This is the one place a longer opening is fine; it happens once.
+- **Neither exists:** first run in this folder. Run the folder connection check below. If it found a clear signal to warn about, lead with that; otherwise open plainly with: "Looks like this is the first time FundCFO is running in this folder — where should we start?" This is the one place a longer opening is fine; it happens once.
 - **Both exist:** normal — see Status line.
 - **Only one exists:** flag it in one line — name the missing file and the folder you're in — before continuing. It means a file was moved or deleted, or the user is in a different folder than usual.
 
@@ -38,9 +38,9 @@ Plugin-owned files always stay in the folder they were first created in. Grantin
 
 #### Folder connection check
 
-Persistence depends on a real, connected folder, and there's no confirmed way to know from inside a skill whether one exists — it may vary by host. So do both: check what you can, and verify with the user regardless. Before writing `todos.md`/`actions.md` for the first time, look at whatever your own context tells you about where that write will land. If it clearly names a real, user-owned folder, say which one. If it doesn't — no path visible, or what you can see looks like internal, temporary or account-level storage rather than a folder on the user's machine — say so plainly and warn that without a connected Project folder, nothing written this session will still be there next time. Either way, ask the user to confirm, once, that they can see `todos.md` in their own file browser (Finder/Explorer) outside this chat — that check can't be fooled by a path that looks plausible but isn't actually persistent. If they say they can't find it, stop and tell them to connect a folder before relying on anything from this session.
+Persistence depends on a real, connected folder, and there's no confirmed way to know from inside a skill whether one exists — it may vary by host. Before writing `todos.md`/`actions.md` for the first time, look at whatever your own context tells you about where that write will land. Only act on a clear signal: if what you can see plainly indicates non-persistent, temporary or account-level storage rather than a real folder on the user's machine, say so and tell them to connect a local folder before relying on anything from this session. If you can't tell either way — no clear signal, or a path that looks like an ordinary folder — say nothing about it and proceed as an ordinary first run. Don't ask the user to go check anything themselves; a warning on a guess is worse than no warning.
 
-This is self-correcting even when the check above finds nothing to go on: because "neither file exists" is what triggers first-run in the first place, a persistence failure that slips through once surfaces again, with the same warning, the very next time the user opens this folder — so a real gap shows up within two sessions, not silently forever.
+This is deliberately quiet on uncertainty, not a full guarantee — but the gap is self-correcting. Because "neither file exists" is what triggers first-run in the first place, a persistence failure that slips through once surfaces again, unprompted: the next time the user opens this folder, it looks like a fresh first run with no tasks, which is itself the signal something didn't stick. Let that happen rather than manufacturing a check to preempt it.
 
 ### Status line
 
