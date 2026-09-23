@@ -2,7 +2,7 @@
 
 fundcfo.ai — an assistant for the CFO of a VC fund, packaged as a Claude Cowork plugin.
 
-**Version 0.3 (pilot)** — one working mode: **Do reporting**, with a **Review** task for draft quarterly reports.
+**Version 0.3.1 (pilot)** — one working mode: **Do reporting**, with a **Review** task for draft quarterly reports.
 
 ## What it does
 
@@ -29,11 +29,11 @@ Requires Claude Cowork (desktop app) on a paid plan.
 
 Use a dedicated folder, and connect it. If you start a Project without connecting a real folder, files still get written somewhere, but they may not be there in your next chat. The first run warns about this when there's a clear sign it's happening — if you ever see the first-run message again on a folder you'd already been using, that's the tell: connect a real folder and it'll pick up from there.
 
-The first time it's invoked in a new folder, it asks before setting anything up — "Looks like this folder isn't set up for FundCFO yet — want me to set it up here?" — rather than writing into whatever folder happens to be open. Say yes and it creates the three files below in one go.
+The first time it's invoked in a new folder, it asks before setting anything up — "Looks like this folder isn't set up for FundCFO yet — want to use it as your FundCFO project?" — rather than writing into whatever folder happens to be open. Say yes and it creates the files below, confirms with "You're set up. Now let's get to work...", and goes straight into the normal opening.
 
 ## Usage
 
-`/fundcfo` opens with a one-line status ("You're doing finance for Acme Fund — 2 tasks open, last action today"), then the Menu:
+`/fundcfo` opens with a one-line status ("You're doing finance for Acme Fund — 2 tasks open, last action today"), then the Menu. Once a folder is set up, you don't need to type `/fundcfo` again in that folder — asking about your tasks, or anything fund-CFO related, runs it directly, including on a plain "hey."
 
 ```
 What would you like to do?
@@ -47,7 +47,7 @@ What would you like to do?
 Each run writes to your Project folder:
 - `actions.md`: a high-level history of what the plugin has done — a task added, a report reviewed, and so on. One line per action, appended every run.
 - `todos.md` and `config.yaml`: your task list and preferences.
-- `CLAUDE.md`: written once, on the first run only (skipped if you already have one). It tells Claude this folder is managed by fundcfo, so opening the folder directly and asking "do I have tasks?" runs fundcfo right away, exactly as if you'd typed `/fundcfo` — you don't need to type it first once a folder is set up.
+- `CLAUDE.md`: written once, on the first run only (skipped if you already have one). It's a self-sufficient copy of the opening behavior — status line, menu, task/question handling — so a plain "hey" or "what tasks do we have?" in this folder runs it directly, with no dependency on the `fundcfo` skill itself being invoked.
 
 Plugin-owned files stay wherever they were first created — connecting more folders later, to read other sources, never moves them.
 

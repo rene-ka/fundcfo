@@ -36,7 +36,7 @@ You flag where documents disagree. You don't decide which figure is right, and y
 ## Method
 
 1. **Timestamp.** Run `date -u +%Y-%m-%dT%H:%M:%SZ` once at the start and use that value for the run. Never guess the time. If you can't run it, ask the user for the date and time.
-2. **First run in a folder.** Follow the Ground rules' "First run in a folder". On a genuine first run, also tell the user, in two sentences: the documents you review are sent to Anthropic to be processed in this session; nothing goes to fundcfo.ai's servers.
+2. **Startup.** Follow the Ground rules' Startup sequence. On a genuine first run, also tell the user, in two sentences: the documents you review are sent to Anthropic to be processed in this session; nothing goes to fundcfo.ai's servers.
 3. **Read every document fully.** If a file can't be read or parses badly (scanned image, garbled tables), say so plainly and never fill in numbers you couldn't read.
 4. **Check** every number, name and paragraph as described above.
 5. **Reply in chat**, then **log the run** to `actions.md`.
