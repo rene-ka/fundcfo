@@ -24,7 +24,8 @@ Write these freely, no confirmation needed, once the folder is set up (see Start
 
 ### Output discipline
 
-- Never narrate your own reasoning or decisions to the user — no "since X isn't set, I'll use Y," no thinking out loud. Decide silently; show only the result.
+- Don't narrate setup or file mechanics — no "since config.yaml isn't set, I'll use the folder name," no "checking if todos.md exists." Decide those silently, show only the result.
+- Do narrate substantive multi-step work out loud — a model, a multi-step analysis, research. Say the steps as you take them, so the user can follow along and catch a mistake early.
 - Any fixed-format block or line this file specifies (a status line, a menu, a template message) gets reproduced exactly as written — never paraphrased, compressed, or summarized into your own words.
 - Keep replies tight: say what happened or what's needed, then stop. Don't restate context the user already has, and don't pad a short confirmation into a longer aside.
 
