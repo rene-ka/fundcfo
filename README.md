@@ -24,12 +24,10 @@ It flags disagreements between documents. It doesn't decide which figure is righ
 Requires Claude Cowork (desktop app) on a paid plan.
 
 1. Install the plugin: in Cowork, add it as a custom plugin file (a zip of this repo's plugin folders).
-2. Create a Cowork Project with **Use an existing folder**, pointing at a dedicated folder for your fund reports. Put the draft report there, and any comparison sources you have.
+2. Create a Cowork Project with **Use an existing folder**, pointing at a dedicated folder for this project.
 3. In that Project, type `/fundcfo`.
 
 Use a dedicated folder, and connect it. If you start a Project without connecting a real folder, files still get written somewhere, but they may not be there in your next chat. The first run warns about this when there's a clear sign it's happening — if you ever see the first-run message again on a folder you'd already been using, that's the tell: connect a real folder and it'll pick up from there.
-
-The first time it's invoked in a new folder, it asks before setting anything up — "Looks like this folder isn't set up for FundCFO yet — want to use it as your FundCFO project?" — rather than writing into whatever folder happens to be open. Say yes and it creates the files below, confirms with "You're set up. Now let's get to work...", and goes straight into the normal opening.
 
 ## Usage
 
