@@ -2,7 +2,7 @@
 
 fundcfo.ai — an assistant for the CFO of a VC fund, packaged as a Claude Cowork plugin.
 
-**Version 0.3.1 (pilot)** — one working mode: **Do reporting**, with a **Review** task for draft quarterly reports.
+**Version 0.3.2 (pilot)** — one working mode: **Do reporting**, with a **Review** task for draft quarterly reports.
 
 ## What it does
 
