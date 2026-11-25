@@ -1,7 +1,7 @@
 {
   "name": "fundcfo",
-  "description": "An assistant for the CFO of a VC fund. v0.3.3: review a draft quarterly report for inconsistencies.",
-  "version": "0.3.3",
+  "description": "An assistant for the CFO of a VC fund: tasks, a handbook of your processes, and CFO skills. v0.4.0: structure in place; live: task list and draft-report review.",
+  "version": "0.4.0",
   "author": {
     "name": "fundcfo.ai"
   },

@@ -1,37 +1,50 @@
 # fundcfo
 
-fundcfo.ai — an assistant for the CFO of a VC fund, packaged as a Claude Cowork plugin.
+fundcfo.ai: an assistant for the CFO of a VC fund, packaged as a Claude plugin.
 
-**Version 0.3.3 (pilot)** — one working mode: **Do reporting**, with a **Review** task for draft quarterly reports.
+## How it works (TL;DR)
 
-## What it does
+- **CFO skills** bring the judgment: how a CFO thinks about tasks, reporting, risk, modelling or contracts.
+- The plugin ships **process templates**: generic how-tos for fund-CFO work, such as quarterly reporting, with common pitfalls and important notes.
+- One working folder holds your **handbook** for the whole setup, across all funds and vehicles. Its **processes** are the templates copied and adapted to your setup: who does what, where the files are, which deadlines apply.
+- Day-to-day work runs as **tasks** ("Q1 2027 reporting"): short entries that point to a process and move across a kanban board (Backlog, Next up, In progress, Done, Dropped). When a task shows that the process is missing something, the process gets updated for next time.
+- Open a session in your working folder and you get a status line and a fixed Menu. You can also call any skill directly, even outside a working folder, for one-off work that isn't saved.
+- By default the plugin proposes what it's about to do and waits for your yes. In auto mode it just does it and tells you what it did.
 
-The plugin is built around the different ways a fund CFO works: reporting, checking, modelling, answering LPA questions and so on — see `OPERATING-RULES.md` and `skills/fundcfo/SKILL.md` for the full list. Only reporting is live in this version, and only its Review task.
+More detail: [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
 
-**Review** cross-checks a draft report and flags disagreements for you to judge. You give it the draft, plus whatever you have of:
+## CFO skills
 
-- the final report of the past quarter, or the last two
-- your internal Excel file with the reporting data
-- Word files or other documents with the qualitative parts
-- any other source the report shouldn't contradict, such as portfolio-company reporting
+Explore and learn about the structure · Review overall tasks (CFO 360) · Do a specific task · Drive a process · Confirm or check something · Do reporting · Answer fund dynamics and LPA questions · Look at something from a risk perspective · Strategize on operations · Strategize on the fund · Model something · Research something · Prepare payments · Create or review financial accounts · Exegesis: interpret rules, regulation and contracts
 
-It goes through every number and paragraph and looks for figures that differ between places or sources, names that change, and figures that don't fit together. The reply is a list of observations, for example "IRR 5.4% on pg. 3 vs 5.2% on pg. 2", each with a one-sentence explainer, split into exact findings and general notes. The observations live in the chat reply, not in a file — only a one-line summary is logged.
+## Status
 
-It flags disagreements between documents. It doesn't decide which figure is right, and it doesn't reconcile against a ledger.
+**Version 0.4.0 (pilot).** The structure is in place: working folder, handbook, tasks, process templates and the CFO skills list. Most CFO skills are not live yet. See [docs/ROADMAP.md](docs/ROADMAP.md).
+
+Live now:
+
+- **Tasks**: add, review and work through your task list.
+- **Do reporting → Review a draft report.** It cross-checks a draft report and flags disagreements for you to judge. You give it the draft, plus whatever you have of:
+  - the final report of the past quarter, or the last two
+  - your internal Excel file with the reporting data
+  - Word files or other documents with the qualitative parts
+  - any other source the report shouldn't contradict, such as portfolio-company reporting
+
+  It goes through every number and paragraph, looking for figures that differ between places or sources, names that change, and figures that don't fit together. You get a list of observations, for example "IRR 5.4% on pg. 3 vs 5.2% on pg. 2", split into exact findings and general notes. It doesn't decide which figure is right, and it doesn't reconcile against a ledger.
 
 ## Setup
 
-Requires Claude Cowork (desktop app) on a paid plan.
+Built for Claude Cowork (desktop app, paid plan). It also runs in Claude Code.
 
 1. Install the plugin: in Cowork, add it as a custom plugin file (a zip of this repo's plugin folders).
-2. Create a Cowork Project with **Use an existing folder**, pointing at a dedicated folder for this project.
-3. In that Project, type `/fundcfo`.
+2. Create a Cowork Project with **Use an existing folder**, pointing at a dedicated folder.
+3. In that Project, type `/fundcfo`. The first run sets up the folder.
 
-Use a dedicated folder, and connect it. If you start a Project without connecting a real folder, files still get written somewhere, but they may not be there in your next chat. The first run warns about this when there's a clear sign it's happening — if you ever see the first-run message again on a folder you'd already been using, that's the tell: connect a real folder and it'll pick up from there.
+Connect a real folder. Without one, files may not be there in your next chat. If you see the first-run message again on a folder you've been using, that's the sign: connect the folder and it picks up from there.
 
-## Usage
+## Using it
 
-`/fundcfo` opens with a one-line status ("You're doing finance for Acme Fund — 2 tasks open, last action today"), then the Menu. Once a folder is set up, you don't need to type `/fundcfo` again in that folder — asking about your tasks, or anything fund-CFO related, runs it directly, including on a plain "hey."
+`/fundcfo` opens with a one-line status ("You're doing finance for Acme Ventures — 2 tasks open, last action today"), then the Menu:
 
 ```
 What would you like to do?
@@ -42,43 +55,14 @@ What would you like to do?
   4) Periodic task check (coming soon)
 ```
 
-Each run writes to your Project folder:
-- `actions.md`: a high-level history of what the plugin has done — a task added, a report reviewed, and so on. One line per action, appended every run.
-- `todos.md` and `config.yaml`: your task list and preferences.
-- `CLAUDE.md`: written once, on the first run only (skipped if you already have one). It's a self-sufficient copy of the opening behavior — status line, menu, task/question handling — so a plain "hey" or "what tasks do we have?" in this folder runs it directly, with no dependency on the `fundcfo` skill itself being invoked.
-
-Plugin-owned files stay wherever they were first created — connecting more folders later, to read other sources, never moves them.
+Once a working folder is set up, you don't need to type `/fundcfo` again there: a plain "hey" starts it. You can also call any skill directly at any time. Outside a working folder, the plugin still answers questions and does one-off work, but saves nothing.
 
 ## Data handling
 
-- Sent to Anthropic when you run it: the draft report, the comparison sources, and your task list, which may contain deal or people names.
-- Stored only on your machine, in your Cowork Project folder: `actions.md`, `todos.md`, `config.yaml`.
+- Sent to Anthropic when you run it: the documents you work on and your tasks and handbook, which may contain deal or people names.
+- Stored only in your working folder (and wherever you point the handbook).
 - Nothing reaches fundcfo.ai's servers. There are none.
 
-## Repository layout
+## Credits
 
-```
-.claude-plugin/plugin.json
-OPERATING-RULES.md                          shared ground rules: files, logging, tasks, asking permission
-scripts/sync-operating-rules.py             copies OPERATING-RULES.md into every skill (run after editing it)
-skills/fundcfo/                             the /fundcfo entry point: working modes, status line, Menu
-skills/do-reporting/                        the reporting mode
-skills/do-reporting/references/review.md    the Review task's instructions
-```
-
-To package for sharing, name the zip after `plugin.json`'s current version:
-
-```
-VERSION=$(python3 -c "import json; print(json.load(open('.claude-plugin/plugin.json'))['version'])")
-zip -r fundcfo-$VERSION.zip .claude-plugin skills
-```
-
-## Development
-
-`OPERATING-RULES.md` is the single source of truth for the rules every skill follows (file roles, logging, task handling, when to ask permission). Each `skills/*/SKILL.md` carries its own copy, between `<!-- OPERATING-RULES:START -->` / `<!-- OPERATING-RULES:END -->` markers, because a skill can't assume another skill's file was read this session. After editing `OPERATING-RULES.md`, run:
-
-```
-python3 scripts/sync-operating-rules.py
-```
-
-then `claude plugin validate .` before committing.
+Inspired by [gstack](https://github.com/garrytan/gstack).

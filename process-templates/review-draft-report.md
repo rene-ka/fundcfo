@@ -1,12 +1,12 @@
 ---
-name: review
+name: review-draft-report
 description: Cross-check a draft quarterly or other fund report for inconsistencies against other sources and against itself.
 live: true
 highlight: true
 try: "review my quarterly report"
 ---
 
-# Review
+# Review a draft report
 
 The user gives you a draft report, which is normally a PDF but could be a docx or similar. You check its data for internal consistency and against other data. This is a checkmark exercise, so it is tedious by nature: go through every number and paragraph, don't sample.
 
@@ -36,10 +36,10 @@ You flag where documents disagree. You don't decide which figure is right, and y
 ## Method
 
 1. **Timestamp.** Run `date -u +%Y-%m-%dT%H:%M:%SZ` once at the start and use that value for the run. Never guess the time. If you can't run it, ask the user for the date and time.
-2. **Startup.** Follow the Ground rules' Startup sequence. On a genuine first run, also tell the user, in two sentences: the documents you review are sent to Anthropic to be processed in this session; nothing goes to fundcfo.ai's servers.
+2. **First run.** If Startup just ran Setup, also tell the user, in two sentences: the documents you review are sent to Anthropic to be processed in this session; nothing goes to fundcfo.ai's servers.
 3. **Read every document fully.** If a file can't be read or parses badly (scanned image, garbled tables), say so plainly and never fill in numbers you couldn't read.
 4. **Check** every number, name and paragraph as described above.
-5. **Reply in chat**, then **log the run** to `actions.md`.
+5. **Reply in chat**, then **log the run** to `log.md`.
 
 ## Reply in chat
 
@@ -53,15 +53,15 @@ If nothing was found, say so plainly. Always say which of the four source types 
 
 ## Log the run
 
-One `actions.md` line per run (see Ground rules), after the chat reply:
+One `log.md` line per run (see Ground rules), after the chat reply:
 
 `<timestamp> | Reviewed <draft file name>: <N> findings, <M> notes<, nothing to compare against if no sources were supplied>`
 
 Example: `2026-09-22T10:20:00Z | Reviewed Q2-draft.pdf: 3 findings, 1 note`
 
-This line is the only persisted record of the run — the observations themselves live in the chat reply, not in a file. If the user wants a run's findings kept, tell them to save that reply themselves; this skill doesn't write a findings file.
+This line is the only persisted record of the run — the observations themselves live in the chat reply, not in a file. If the user wants a run's findings kept, tell them to save that reply themselves; this template doesn't write a findings file.
 
-## Don't
+## Common pitfalls
 
 - Don't invent findings, numbers or page references.
 - Don't say which of two disagreeing figures is correct.
