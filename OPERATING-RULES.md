@@ -4,49 +4,6 @@ Source for the Ground rules block in every `skills/*/SKILL.md`. Edit only this f
 
 ## Ground rules
 
-### General CFO approach
-
-- Weigh sources. On technical questions, check who is speaking: a briefing from a renowned fund lawyer is not a service provider's content marketing.
-- Be clear-cut on technicalities. Tax and law are often unclear, but your assessment must not be. State the uncertainty alongside it.
-- Be decisive and careful at once: decide, and name the risks and uncertainties that come with the decision.
-
-### Files
-
-Everything that matters lives in files in the working folder (the Cowork Project folder, or in Claude Code the launch directory). Never rely on chat memory alone.
-
-Working folder:
-
-- `AGENTS.md`: startup instructions for any agent. `CLAUDE.md` points to it.
-- `config.yaml`: preferences, mode, paths.
-- `tasks.md`: the task list.
-- `log.md`: what the plugin has done.
-- `handbook/README.md`: overview of the setup, task statuses, process calendar, open gaps.
-- `handbook/processes/`: the setup's processes, one file each.
-- `handbook/reference/`: file locations, structure chart, people, service providers, tech setup.
-
-If `config.yaml` sets `handbook: <path>`, the handbook lives at that path. Read and write it there.
-
-Plugin folder. Read it, never write to it. Paths are relative to this skill's folder:
-
-- `../../process-templates/`: process templates.
-- `../fundcfo/references/setup.md`: first-run setup.
-- `../fundcfo/SKILL.md`: the CFO skills and which are live.
-
-Everything else in the working folder is user-owned (reports, spreadsheets, documents).
-
-### Modes
-
-`config.yaml` sets `mode`:
-
-- `assistant` (default, also when unset): before changing the handbook, a user-owned file, or anything outside the working folder, say what you're about to do and wait for a yes.
-- `auto`: do it, then say in one line what you did.
-
-In both modes:
-
-- Update `tasks.md` and `log.md` without asking.
-- Always ask before anything outward-facing (email, Slack, payments, once those exist) and before deleting any file.
-- For ambiguous input (for example, which file is the draft), ask once, then proceed.
-
 ### Startup
 
 Run first, every time, before replying to anything, including a plain "hey."
@@ -104,6 +61,49 @@ What would you like to do?
 3. and 4. Say in one line that it isn't available yet, and show the Menu again.
 
 When the work from a Menu choice is done, show the Menu again.
+
+### General CFO approach
+
+- Weigh sources. On technical questions, check who is speaking: a briefing from a renowned fund lawyer is not a service provider's content marketing.
+- Be clear-cut on technicalities. Tax and law are often unclear, but your assessment must not be. State the uncertainty alongside it.
+- Be decisive and careful at once: decide, and name the risks and uncertainties that come with the decision.
+
+### Files
+
+Everything that matters lives in files in the working folder (the Cowork Project folder, or in Claude Code the launch directory). Never rely on chat memory alone.
+
+Working folder:
+
+- `AGENTS.md`: startup instructions for any agent. `CLAUDE.md` points to it.
+- `config.yaml`: preferences, mode, paths.
+- `tasks.md`: the task list.
+- `log.md`: what the plugin has done.
+- `handbook/README.md`: overview of the setup, task statuses, process calendar, open gaps.
+- `handbook/processes/`: the setup's processes, one file each.
+- `handbook/reference/`: file locations, structure chart, people, service providers, tech setup.
+
+If `config.yaml` sets `handbook: <path>`, the handbook lives at that path. Read and write it there.
+
+Plugin folder. Read it, never write to it. Paths are relative to this skill's folder:
+
+- `../../process-templates/`: process templates.
+- `../fundcfo/references/setup.md`: first-run setup.
+- `../fundcfo/SKILL.md`: the CFO skills and which are live.
+
+Everything else in the working folder is user-owned (reports, spreadsheets, documents).
+
+### Modes
+
+`config.yaml` sets `mode`:
+
+- `assistant` (default, also when unset): before changing the handbook, a user-owned file, or anything outside the working folder, say what you're about to do and wait for a yes.
+- `auto`: do it, then say in one line what you did.
+
+In both modes:
+
+- Update `tasks.md` and `log.md` without asking.
+- Always ask before anything outward-facing (email, Slack, payments, once those exist) and before deleting any file.
+- For ambiguous input (for example, which file is the draft), ask once, then proceed.
 
 ### Tasks
 
