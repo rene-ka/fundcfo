@@ -1,61 +1,29 @@
 # Setup
 
-Run when the user chooses to set up a working folder here.
+## First run
 
-1. **Folder check.** If your context clearly shows non-persistent or temporary storage instead of a real folder, warn the user to connect a local folder first. If you can't tell, say nothing.
-2. **Create** the files below. If a file already exists, leave it as it is.
-   - `CLAUDE.md` already exists and isn't yours: offer to append the line `See AGENTS.md for FundCFO.` instead.
-   - Get the timestamp from `date -u +%Y-%m-%dT%H:%M:%SZ`.
-3. Say: "You're set up. Now let's get to work..."
+Run when `<home>/config.yaml` doesn't exist.
 
-If files were created under a folder-check warning and a real folder becomes available later in the same session, move them there, say so, and log it. Otherwise never move them. If you can't find them where expected, check other connected folders before starting a new set, and say what you found.
+1. If the environment looks non-persistent (for example, a sandbox with no mounted storage), warn that the data may not survive this session.
+2. Say: "FundCFO keeps its data in `<home>`, with a separate project folder for each setup. Most people need just one. What should I call your first project? Usually your firm's name." Wait for the answer.
+3. Create `<home>/config.yaml`. Take `version` from `../../.claude-plugin/plugin.json` (relative to this skill's folder). `<slug>` is the name in lowercase with hyphens for spaces, for example `acme-ventures`.
 
-## Files
+   ```
+   active_project: <slug>
+   version: <version>
+   ```
 
-`AGENTS.md`:
+4. Create the Project files below in `<home>/<slug>/`.
+5. Say: "You're set up. Now let's get to work..." Then say the status line and show the Menu.
 
-```
-# FundCFO
+## Project files
 
-This folder is managed by the fundcfo plugin. Tasks: tasks.md. History: log.md.
-Handbook: handbook/, or the path set as `handbook:` in config.yaml.
-
-Run FundCFO's startup for the first message of every session in this folder, whatever
-the message says. Don't wait for /fundcfo to be typed, and don't judge intent first.
-
-If the fundcfo plugin is available, use its fundcfo skill. Otherwise:
-
-1. Count open tasks: `grep -cE '^- \[(Backlog|Next up|In progress)\]' tasks.md`.
-   Compare the date of log.md's last line to `date -u +%Y-%m-%d`: "today", "yesterday",
-   or the plain date.
-2. Say: "You're doing finance for <team_name from config.yaml, or this folder's name>
-   — <N> tasks open, last action <that time>."
-3. Show, with a native choice UI if the host has one:
-     What would you like to do?
-       1) Add a task, ask a question, or just chat
-       2) Review and work on your tasks
-       3) Check email / Slack (coming soon)
-       4) Periodic task check (coming soon)
-4. Handle what the user said. Tasks are one line each in tasks.md:
-   `- [status] name | description | due date | people`, status one of Backlog,
-   Next up, In progress, Done, Dropped. Never delete a task; set it to Dropped.
-   Log every change to log.md as `<date -u +%Y-%m-%dT%H:%M:%SZ> | <what happened>`.
-5. When a piece of work is done, say what's next on that task and show the menu again.
-
-If tasks.md or log.md is missing, say so plainly; don't guess.
-```
-
-`CLAUDE.md`:
-
-```
-@AGENTS.md
-
-See AGENTS.md for FundCFO.
-```
+Used by First run and by "New project". Get the timestamp from the clock (`date -u +%Y-%m-%dT%H:%M:%SZ`). If a file already exists, leave it as it is.
 
 `config.yaml`:
 
 ```
+team_name: <name>
 mode: assistant
 ```
 
@@ -69,7 +37,7 @@ mode: assistant
 `log.md`:
 
 ```
-<timestamp> | Set up FundCFO in this folder
+<timestamp> | Created project <name>
 ```
 
 `handbook/README.md`:

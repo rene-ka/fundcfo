@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.5.0
+
+Data gets a fixed home.
+
+- Instructions are no longer written for a plugin only. They rely on no host features, so the same files can run in Cowork, Claude Code, an Agent SDK agent, a managed agent or another model. Data is found the same way everywhere, and shell commands say what they are for.
+- Data lives in one root, `~/Documents/FundCFO` (or `FUNDCFO_HOME`), with one folder per project. The session's folder no longer matters, so the in/outside-a-working-folder logic, `AGENTS.md`/`CLAUDE.md` in the data, and auto-start on "hey" are gone.
+- Projects: sticky active project; "switch project", "new project" and "move project". A project can live in any folder; the root config records where.
+- `<home>/config.yaml` records the data version. Data upgrades list their changes and ask first. Folders from 0.4 or earlier are offered a move into the data root, or can stay where they are as a project.
+- Startup asks for access to the data folder right away, for no more than it needs, and won't set up in an existing `Documents/FundCFO` folder that isn't FundCFO's.
+- Update notice: once a day, FundCFO checks GitHub for a newer version and says how to update.
+- Menu: dropped "Check email / Slack".
+
 ## 0.4.0
 
 Structure for a complete plugin; little new content.

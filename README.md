@@ -1,15 +1,15 @@
 # fundcfo
 
-fundcfo.ai: an assistant for the CFO of a VC fund, packaged as a Claude plugin.
+fundcfo.ai: an assistant for the CFO of a VC fund. It runs in Claude Cowork and Claude Code, and its instructions can inform other agents too.
 
 ## How it works (TL;DR)
 
 - **CFO skills** bring the judgment: how a CFO thinks about tasks, reporting, risk, modelling or contracts.
-- The plugin ships **process templates**: generic how-tos for fund-CFO work, such as quarterly reporting, with common pitfalls and important notes.
-- One working folder holds your **handbook** for the whole setup, across all funds and vehicles. Its **processes** are the templates copied and adapted to your setup: who does what, where the files are, which deadlines apply.
+- FundCFO ships **process templates**: generic how-tos for fund-CFO work, such as quarterly reporting, with common pitfalls and important notes.
+- Your data lives in one place, `~/Documents/FundCFO`, with one **project** per setup (most people have one). A project holds your **handbook** for the whole setup, across all funds and vehicles. Its **processes** are the templates copied and adapted to your setup: who does what, where the files are, which deadlines apply.
 - Day-to-day work runs as **tasks** ("Q1 2027 reporting"): short entries that point to a process and move across a kanban board (Backlog, Next up, In progress, Done, Dropped). When a task shows that the process is missing something, the process gets updated for next time.
-- Open a session in your working folder and you get a status line and a fixed Menu. You can also call any skill directly, even outside a working folder, for one-off work that isn't saved.
-- By default the plugin proposes what it's about to do and waits for your yes. In auto mode it just does it and tells you what it did.
+- `/fundcfo` gives you a status line and a fixed Menu. You can also call any skill directly.
+- By default FundCFO proposes what it's about to do and waits for your yes. In auto mode it just does it and tells you what it did.
 
 More detail: [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
 
@@ -19,7 +19,7 @@ Explore and learn about the structure · Review overall tasks (CFO 360) · Do a 
 
 ## Status
 
-**Version 0.4.0 (pilot).** The structure is in place: working folder, handbook, tasks, process templates and the CFO skills list. Most CFO skills are not live yet. See [docs/ROADMAP.md](docs/ROADMAP.md).
+**Version 0.5.0 (pilot).** The structure is in place: data root and projects, handbook, tasks, process templates and the CFO skills list. Most CFO skills are not live yet. See [docs/ROADMAP.md](docs/ROADMAP.md).
 
 Live now:
 
@@ -34,13 +34,34 @@ Live now:
 
 ## Setup
 
-Built for Claude Cowork (desktop app, paid plan). It also runs in Claude Code.
+### Claude Cowork
 
-1. Install the plugin: in Cowork, add it as a custom plugin file (a zip of this repo's plugin folders).
-2. Create a Cowork Project with **Use an existing folder**, pointing at a dedicated folder.
-3. In that Project, type `/fundcfo`. The first run sets up the folder.
+Built for Cowork (Claude desktop app, paid plan).
 
-Connect a real folder. Without one, files may not be there in your next chat. If you see the first-run message again on a folder you've been using, that's the sign: connect the folder and it picks up from there.
+1. Download `fundcfo-<version>.zip` from [GitHub releases](https://github.com/rene-ka/fundcfo/releases).
+2. In Cowork, add it as a custom plugin by uploading the zip.
+3. Type `/fundcfo` in any chat or Project. On first use it asks for access to `~/Documents/FundCFO`, asks what to call your first project, and sets it up. To grant as little as possible, create an empty `FundCFO` folder in Documents first.
+
+### Claude Code
+
+```
+git clone https://github.com/rene-ka/fundcfo.git
+claude --plugin-dir ./fundcfo
+```
+
+Clone it anywhere except straight into Documents: a `fundcfo` folder there would clash with FundCFO's data folder, `~/Documents/FundCFO`. Then type `/fundcfo`. First use works as in Cowork.
+
+### Anywhere else
+
+No recipe yet, but FundCFO is plain Markdown and isn't tied to Claude. Point your agent (Agent SDK, a managed agent, another model) at `skills/fundcfo/SKILL.md`, give it file access, and set `FUNDCFO_HOME` to a folder that persists. If you get it running, open an issue and tell us how. We'd love to add your setup here.
+
+### Your data, updates and older versions
+
+Your data stays in `~/Documents/FundCFO` whichever folder a session runs in.
+
+To update, download the latest release from [GitHub releases](https://github.com/rene-ka/fundcfo/releases) and add it the same way, replacing the old one. FundCFO tells you when a new version is out.
+
+If you used FundCFO 0.4 or earlier, open a session in your old folder and type `/fundcfo`. It offers to move that data into `~/Documents/FundCFO` as a project, or to keep it where it is.
 
 ## Using it
 
@@ -51,16 +72,17 @@ What would you like to do?
   1) Add a task, ask a question, or just chat
      Try: "review my quarterly report"
   2) Review and work on your tasks
-  3) Check email / Slack (coming soon)
-  4) Periodic task check (coming soon)
+  3) Periodic task check (coming soon)
 ```
 
-Once a working folder is set up, you don't need to type `/fundcfo` again there: a plain "hey" starts it. You can also call any skill directly at any time. Outside a working folder, the plugin still answers questions and does one-off work, but saves nothing.
+You can also call any skill directly, such as `/do-reporting` with a draft. Say "switch project" or "new project" to work with more than one setup, and "move project" to keep a project in another folder, such as a shared drive.
 
 ## Data handling
 
 - Sent to Anthropic when you run it: the documents you work on and your tasks and handbook, which may contain deal or people names.
-- Stored only in your working folder (and wherever you point the handbook).
+- Stored only on your machine, in `~/Documents/FundCFO`, or wherever you keep a project or handbook.
+- FundCFO asks the Claude app for access to `Documents/FundCFO` only. If that folder doesn't exist yet, it offers to create it.
+- Once a day, FundCFO reads its latest version number from this GitHub repo and tells you if an update is available. Nothing about you or your data is sent.
 - Nothing reaches fundcfo.ai's servers. There are none.
 
 ## Credits
